@@ -3,7 +3,7 @@
   define("DB_HOST", "localhost");
   define("DB_USER", "root");
   define("DB_PASS", "");
-  define("DB_NAME", "suivie_hachami");
+  define("DB_NAME", "alpha");
 
   // App Root
   define('APPROOT', dirname(dirname(__FILE__)));
