@@ -6,6 +6,38 @@
       $this->db = new Database;
     }
 
+    public function register($data){
+    
+    
+
+      // Rest of the registration logic
+      $this->db->query('INSERT INTO users (fullname, city, email, password, confirmation_token,  imgUrl, roleId) VALUES(:fullname, :city, :email, :password, :confirmation_token , :imgUrl, :roleId)');
+  
+      // Bind values
+      $this->db->bind(':fullname', $data['fullname']);
+      $this->db->bind(':city', $data['city']);
+      $this->db->bind(':email', $data['email']);
+      $this->db->bind(':password', $data['password']);
+      $this->db->bind(':imgUrl', 'img.png');
+      $this->db->bind('confirmation_token', $data['token']);
+      $this->db->bind(':roleId', 3);//role id for client
+  
+      // Execute
+      if($this->db->execute()){
+          return true;
+      } else {
+          return false;
+      }
+  }
+  
+    public function findUserByEmail($email) {
+      $this->db->query('SELECT * FROM users WHERE email = :email');
+      $this->db->bind(':email', $email);
+  
+      $row = $this->db->single();
+  
+      return ($row) ? true : false;
+    }
     
 
     // Login / Authenticate User
@@ -24,16 +56,6 @@
       {
         return false;
       }
-    }
-
-    public function findUserByEmail($data) 
-    {
-      $this->db->query('SELECT * FROM users WHERE email = :email');
-      $this->db->bind(':email', $data['email']);
-  
-      $row = $this->db->single();
-  
-      return ($row) ? true : false;
     }
 
     public function addUsers($username, $email, $password)
