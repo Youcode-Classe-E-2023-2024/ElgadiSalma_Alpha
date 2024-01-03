@@ -69,9 +69,13 @@ Class Users extends Controller
             $password = $data->password;
 
             if (!empty($username && $email && $password)) {
-                $add = $this->userModel->addUsers($username, $email, $password);
-                echo json_encode($add);die;
-                if ($add) {
+                // echo(json_encode($data->username));die;
+
+                // $add = $this->userModel->addUsers($username, $email, $password);
+                // echo(json_encode($data->username));die;
+                if ($this->userModel->addUsers($username, $email, $password)) {
+                    // echo(json_encode($data->username));die;
+
                     echo json_encode(array('message' => true));
                 } else {
                     echo json_encode(array('message' => false));
