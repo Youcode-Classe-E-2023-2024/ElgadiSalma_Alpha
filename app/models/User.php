@@ -37,7 +37,7 @@
     }
 
     public function addUsers($username, $email, $password)
-    {n    
+    {
       $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
   
       $this->db->bind(':username', $username);
