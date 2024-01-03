@@ -1,87 +1,67 @@
-// let endpoint = 'http://localhost/ElgadiSalma_Alpha/Users/'
+    console.log("saaa");
+    let endpoint = 'http://localhost/ElgadiSalma_Alpha/Users/';
+    const addContainer = document.getElementById('addContainer');
+    const addButton = document.getElementById('addButton');
 
-// const pubContainer = document.getElementById('pubContainer');
+    let formIndex = 1;
 
-// fetch(endpoint+`displayAll`)
-//     .then(response => response.json())
-//     .then(data => {
-//       // publication = data;
+    addButton.addEventListener('click', function (event) {
+        addContainer.insertAdjacentHTML('beforeend', createUserFormHTML(formIndex));
+        formIndex++;
+    });
 
-//       displayData(data);
-//     })
-//     .catch(error => {
-//       console.error('Error:', error);
-//     });
+    function addUser() {
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
 
+        const userData = {
+            username: username,
+            email: email,
+            password: password,
+        };
 
-// function displayData(data)
-// {
-//     // console.log(pubContainer);
-//     const rows = data.map((pub) => {
-        
-//         return (
-//      `
-//         <div class="px-5 py-3 text-center flex flex-col   ">
-//             <h3 class="text-black uppercase text-2xl font-bold  ">${pub.username}</h3>
-//             <div>
-//                 <span class=" mt-2 text-blue-500 font-bold p-2 " id="priceInput" >${pub.price} DH </span>
-//             </div>
-//             <div>
-//                 <span class="float-right p-2 text-gray-400 ">${pub.created_by}</span>
-//             </div>     
-//         </div>  
-//      `
-//         );
-//       });
-//       console.log(rows);
-//       pubContainer.innerHTML = rows;
-//   }
+        if (username !== '' && email !== '' && password !== '') {
 
+            fetch(endpoint + `addUsers`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            })
+                .then(response => response.json())
+                .then(data => { 
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Erreur', error);
+                });
+        }
+    }
 
-// function addUser()
-// {
-//     const usernameInput = document.getElementById('username').value.trim();
-//     const emailInput = document.getElementById('email').value.trim();
-//     const passwordInput = document.getElementById('password').value.trim();
+    function createUserFormHTML(index) {
+        return `
+            <br>
+            <h2 class="text-center drop-shadow-md font-bold text-2xl uppercase mb-10">Post </h2>
+            <div>
+                <div class="mb-5">
+                    <label for="username" class="block mb-2 font-bold text-gray-600 uppercase">username</label>
+                    <input type="text" id="username" name="username[]" placeholder="UserName." class="border border-gray-300 shadow p-3 w-full rounded ">
+                </div>
 
-//     const pubData = 
-//     {
-//       username: usernameInput,
-//       email: emailInput,
-//       created_by: passwordInput,
-//     };
+                <div class="mb-5">
+                    <label for="email" class="block mb-2 font-bold text-gray-600 uppercase">Email</label>
+                    <input type="email" id="email" name="email[0]" placeholder="Email." class="border border-gray-300 shadow p-3 w-full rounded ">
+                </div>
 
-//     if (usernameInput !== '' && emailInput !=='' && passwordInput !=='') 
-//     {
-//       fetch(endpoint+`addPub`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(pubData),
-//         })
+                <div class="mb-5">
+                    <label for="password" class="block mb-2 font-bold text-gray-600 uppercase">password</label>
+                    <input type="password" id="password" name="password[0]" placeholder="password." class="border border-gray-300 shadow p-3 w-full rounded ">
+                </div>
+            </div>
+            <div id="dynamicDivContainer"></div>
+            <div class="flex justify-between">
+        `;
+    }
 
-//         .then(response => response.json())
-//         .then(data => {
-//           // console.log(data);
-//           if (data.message) {
-//             fetch(endpoint+`displayAll`)
-//             .then(response => response.json())
-//             .then(data => {
-//               // publication = data;
-
-//               displayData(data);
-//             })
-//             .catch(error => {
-//               console.error('Error:', error);
-//             });
-
-
-//           }
-//         })
-          
-//         .catch(error => {
-//           console.error('Erreur', error);
-//         });
-//     }
-// }
