@@ -7,15 +7,15 @@
         <div>
             <div class="mb-5">
                 <label for="username" class="block mb-2 font-bold text-gray-600 uppercase">username</label>
-                <input type="text" id="username" name="username[]" placeholder="UserName." class="border border-gray-300 shadow p-3 w-full rounded " required>
+                <input type="text" id="username" name="username[0]" name placeholder="UserName." class="border border-gray-300 shadow p-3 w-full rounded " required>
             </div>
             <div class="mb-5">
                 <label for="email" class="block mb-2 font-bold text-gray-600 uppercase">Email</label>
-                <input type="email" id="email" name="email[0]" placeholder="Email." class="border border-gray-300 shadow p-3 w-full rounded " required>
+                <input type="email" id="email" name="email[0]" email placeholder="Email." class="border border-gray-300 shadow p-3 w-full rounded " required>
             </div>
             <div class="mb-5">
                 <label for="password" class="block mb-2 font-bold text-gray-600 uppercase">password</label>
-                <input type="password" id="password" name="password[0]" placeholder="password." class="border border-gray-300 shadow p-3 w-full rounded " required>
+                <input type="password" id="password" name="password[0]" password placeholder="password." class="border border-gray-300 shadow p-3 w-full rounded " required>
             </div>
         </div>
         <div id="addContainer"></div>
@@ -26,12 +26,13 @@
                 </svg>
                 more post
             </button>
-            <button type="button" id="addUser" class="flex justify-center w-1/3 bg-green-500 text-white font-bold p-4 rounded-lg" name="addUser" onclick="addUser()" >
+            <button type="button" id="saveButton" class="flex justify-center w-1/3 bg-green-500 text-white font-bold p-4 rounded-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                 </svg>
                 Save
             </button>
+
         </div>
     </div>
 </div>
