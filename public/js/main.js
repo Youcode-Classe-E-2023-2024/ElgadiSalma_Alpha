@@ -1,4 +1,4 @@
-   console.log("saaa");
+console.log("saaa");
 let endpoint = 'http://localhost/ElgadiSalma_Alpha/Users/';
 const addContainer = document.getElementById('addContainer');
 const addButton = document.getElementById('addButton');
@@ -13,7 +13,8 @@ addButton.addEventListener('click', function (event) {
 });
 
 saveButton.addEventListener('click', function (event) {
-    addUser(); // Appel de la fonction pour ajouter l'utilisateur
+    addUser();
+    saveUsers(); 
 });
 
 function addUser() {
@@ -31,14 +32,33 @@ function addUser() {
         userData.emails.every(email => email !== '') && 
         userData.passwords.every(password => password !== '')) {
 
-        userArray.push(userData); // Ajout des données de l'utilisateur dans le tableau
-
-        // Réinitialisation des champs après sauvegarde
+        userArray.push(userData);
+        
         usernames.forEach(username => username.value = '');
         emails.forEach(email => email.value = '');
         passwords.forEach(password => password.value = '');
 
         console.log('User Array:', userArray);
+    }
+}
+
+function saveUsers() {
+    if (userArray.length > 0) {
+        fetch(endpoint + 'addUsers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userArray), // Envoyer tous les utilisateurs
+        })
+        .then(response => response.json())
+        .then(data => { 
+            console.log(data);
+            userArray = []; // Réinitialisation du tableau après sauvegarde
+        })
+        .catch(error => {
+            console.error('Erreur', error);
+        });
     }
 }
 
