@@ -55,24 +55,16 @@
     }
 
     public function addUsers($username, $email, $password)
-    {
-      $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
-  
-      $this->db->bind(':username', $username);
-      $this->db->bind(':email', $email);
-      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-      $this->db->bind(':password', $hashedPassword);
-      
-      if($this->db->execute())
-      {
-          return true;
-      } 
-      else {
-          return false;
-      }
-    }
-
-
+{
+    $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
+    
+    $this->db->bind(':username', $username);
+    $this->db->bind(':email', $email);
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $this->db->bind(':password', $hashedPassword);
+    
+    return $this->db->execute(); // Ne pas besoin de vérifier ici
+}
 
     //  // Find User By ID
     //  public function getUserById($id){
