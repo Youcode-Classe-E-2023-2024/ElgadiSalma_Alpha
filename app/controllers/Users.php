@@ -104,37 +104,35 @@ Class Users extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {    
             $postData = file_get_contents("php://input");
             $data = json_decode($postData);
-            // echo(json_encode($data->username));die;
-            $username = $data->username;
-            $email = $data->email;
-            $password = $data->password;
 
-            if (!empty($username && $email && $password)) {
-                // echo(json_encode($data->username));die;
+            if (is_array($data) && count($data) > 0) { 
+                foreach ($data as $userData) {
+                    $username = $userData->usernames[0];
+                    $email = $userData->emails[0];
+                    $password = $userData->passwords[0];
 
-                // $add = $this->userModel->addUsers($username, $email, $password);
-                // echo(json_encode($data->username));die;
-                if ($this->userModel->addUsers($username, $email, $password)) {
-                    // echo(json_encode($data->username));die;
-
-                    echo json_encode(array('message' => true));
-                } else {
-                    echo json_encode(array('message' => false));
+                    if (!empty($username) && !empty($email) && !empty($password)) {
+                        if ($this->userModel->addUsers($username, $email, $password)) {
+                            echo json_encode(array('message' => true));
+                        } else {
+                            echo json_encode(array('message' => false));
+                        }
+                    } else {
+                        echo json_encode(['message' => 'invalid request']);
+                    }
                 }
-            } else {
-                echo json_encode(['message' => 'invalid request']);
             }
         } else {
             return $this->view('users/add');
         }
-    }  
-    
+    }
+
     public function logout()
     {
       session_start();
       $_SESSION = array();
       session_destroy();
-      return $this->view('users/login');
+      return $this->view('users/add');
 
     }
 
