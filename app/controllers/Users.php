@@ -11,113 +11,90 @@ Class Users extends Controller
     
     public function register()
     {
-      $data = [];
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+      {
   
-      // Check for POST
-      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  
-        // Init data
-        $data = [
-  
-          'fullname' => trim($_POST['username']),
-          'email' => trim($_POST['email']),
-          'password' => trim($_POST['password']),
-          'fullname_err' => '',
-          'email_err' => '',
-          'password_err' => '',
-        ];
-  
-        // Validate Email
-        if (empty($data['email'])) {
-          $data['email_err'] = 'Pleae enter email';
-        } else {
-          // Check email
-          if ($this->userModel->findUserByEmail($data)) {
-            $data['email_err'] = 'Email is already taken';
-          }
-        }
-  
-        // Validate fullname
-        if (empty($data['fullname'])) {
-          $data['fullname_err'] = 'Please enter name';
-        }
-  
-        // Validate Password
-        if (empty($data['password'])) {
-          $data['password_err'] = 'Please enter password';
-        } elseif (strlen($data['password']) < 6) {
-          $data['password_err'] = 'Password must be at least 6 characters';
-        }
-  
-        // Make sure errors are empty
-        if (empty($data['email_err']) && empty($data['fullname_err']) && empty($data['password_err']))
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $email_err = '';
+
+        if ($this->userModel->findUserByEmail($email)) 
         {
-          if ($this->userModel->register($data)) {
+          $email_err = 'Email is already taken';
+          $this->view('users/register');
+        }
+        else
+        {
+          if ($this->userModel->addUsers($username, $email, $password)) 
+          {
             $this->view('users/login');
           }
-          else{
+          else
+          {
             $this->view('users/register');
-
           }
         }
-    }
-    else{
+      }
+    
+      else
+      {
         $this->view('users/register');
-
-    }
+      }
             
     }
   
     
     public function login()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+      {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $email_err = '';
+        $password_err = '';
+
+  
+        // Validate Email
+        if (empty($email)) 
         {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $email_err = '';
-            $password_err = '';
-
-      
-            // Validate Email
-            if (empty($email)) 
-            {
-                $email_err = 'Please enter email';
-            }
-      
-            // Validate Password
-            if (empty($password)) 
-            {
-                $password_err = 'Please enter password';
-            }
-
-            if (empty($email_err) && empty($password_err)) 
-            {
-                $loggedInUser = $this->userModel->login($email, $password);
-                if ($loggedInUser) 
-                    {
-                        $this->view('pages/index');
-                    } else 
-                    {
-                    $password_err = 'Password not correct';
-                    $this->view('users/login');
-
-                    }
-                    } 
-                else 
-                {
-                // User not found
-                $email_err = 'No user found';
-                }
-
-            // $this->view('users/login', compact('email_err', 'password_err'));
+            $email_err = 'Please enter email';
         }
-        else{
+  
+        // Validate Password
+        if (empty($password)) 
+        {
+            $password_err = 'Please enter password';
+        }
 
-            return $this->view('users/login');
-         }
+        if (empty($email_err) && empty($password_err)) 
+        {
+          $loggedInUser = $this->userModel->login($email, $password);
+          if ($loggedInUser) 
+              {
+                session_start(); 
+                $_SESSION['id_user'] = $loggedInUser['id_user'];
+                $_SESSION['username'] = $loggedInUser['username'];
+                $_SESSION['email'] = $loggedInUser['email'];
+                  $this->view('pages/index');
+              } else 
+              {
+              $password_err = 'Password not correct';
+              $this->view('users/login');
+
+              }
+              } 
+          else 
+          {
+          // User not found
+          $email_err = 'No user found';
+          }
+
+      }
+      else{
+
+          return $this->view('users/login');
+        }
         
     }
 
@@ -150,6 +127,15 @@ Class Users extends Controller
         } else {
             return $this->view('users/add');
         }
-    }       
+    }  
+    
+    public function logout()
+    {
+      session_start();
+      $_SESSION = array();
+      session_destroy();
+      return $this->view('users/login');
+
+    }
 
 }   
