@@ -6,31 +6,27 @@
       $this->db = new Database;
     }
 
-    public function register($data){
+    // public function register($data)
+    // {
     
-    
-
-      // Rest of the registration logic
-      $this->db->query('INSERT INTO users (fullname, city, email, password, confirmation_token,  imgUrl, roleId) VALUES(:fullname, :city, :email, :password, :confirmation_token , :imgUrl, :roleId)');
+    //   $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
   
-      // Bind values
-      $this->db->bind(':fullname', $data['fullname']);
-      $this->db->bind(':city', $data['city']);
-      $this->db->bind(':email', $data['email']);
-      $this->db->bind(':password', $data['password']);
-      $this->db->bind(':imgUrl', 'img.png');
-      $this->db->bind('confirmation_token', $data['token']);
-      $this->db->bind(':roleId', 3);//role id for client
+    //   // Bind values
+    //   $this->db->bind(':username', $data['username']);
+    //   $this->db->bind(':email', $data['email']);
+    //   $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+    //   $this->db->bind(':password', $hashedPassword);
+      
+    //   // Execute
+    //   if($this->db->execute()){
+    //       return true;
+    //   } else {
+    //       return false;
+    //   }
+    // }
   
-      // Execute
-      if($this->db->execute()){
-          return true;
-      } else {
-          return false;
-      }
-  }
-  
-    public function findUserByEmail($email) {
+    public function findUserByEmail($email) 
+    {
       $this->db->query('SELECT * FROM users WHERE email = :email');
       $this->db->bind(':email', $email);
   
@@ -64,7 +60,8 @@
   
       $this->db->bind(':username', $username);
       $this->db->bind(':email', $email);
-      $this->db->bind(':password', $password);
+      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+      $this->db->bind(':password', $hashedPassword);
       
       if($this->db->execute())
       {
