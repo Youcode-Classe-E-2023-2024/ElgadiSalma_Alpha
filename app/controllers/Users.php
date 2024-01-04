@@ -100,32 +100,44 @@ Class Users extends Controller
 
 
     public function addUsers()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {    
-            $postData = file_get_contents("php://input");
-            $data = json_decode($postData);
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {    
+        $postData = file_get_contents("php://input");
+        $data = json_decode($postData);
+    
+        if (is_array($data) && count($data) > 0) { 
+            $response = array();
 
-            if (is_array($data) && count($data) > 0) { 
-                foreach ($data as $userData) {
-                    $username = $userData->usernames[0];
-                    $email = $userData->emails[0];
-                    $password = $userData->passwords[0];
-
+            foreach ($data as $userData) {
+                $usernames = $userData->usernames;
+                $emails = $userData->emails;
+                $passwords = $userData->passwords;
+            
+                for ($i = 0; $i < count($usernames); $i++) {
+                    $username = $usernames[$i];
+                    $email = $emails[$i];
+                    $password = $passwords[$i];
+                        
                     if (!empty($username) && !empty($email) && !empty($password)) {
                         if ($this->userModel->addUsers($username, $email, $password)) {
-                            echo json_encode(array('message' => true));
+                            $response[] = array('message' => true);
                         } else {
-                            echo json_encode(array('message' => false));
+                            $response[] = array('message' => false);
                         }
                     } else {
-                        echo json_encode(['message' => 'invalid request']);
+                        $response[] = array('message' => 'invalid request');
                     }
                 }
             }
-        } else {
-            return $this->view('users/add');
+
+            echo json_encode($response);
         }
+    } else {
+        return $this->view('users/add');
     }
+}
+
+    
 
     public function logout()
     {
