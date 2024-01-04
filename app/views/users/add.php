@@ -35,6 +35,30 @@
 
         </div>
     </div>
+
+
+    <div class="pl-80 flex">
+            <h1 class="text-3xl">
+                Utilisateur
+            </h1>
+        </div>
+        <div class="px-3 py-4 flex justify-center">
+            <table class="w-2/3	 text-md bg-white shadow-md rounded mb-4">
+                <tbody>
+                    <tr class="border-b">
+                        <th class="text-left p-3 px-5">User Name</th>
+                        <th class="text-left p-3 px-5">Email</th>
+                        <th></th>
+                    </tr>
+                    <tr class="border-b hover:bg-orange-100 bg-gray-100">
+
+            <div id="usersContainer">
+            </div>        </tr>
+
+                </tbody>
+            </table>
+    </div>
+    
 </div>
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
