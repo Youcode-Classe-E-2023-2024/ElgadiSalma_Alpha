@@ -1,7 +1,8 @@
 let endpoint = 'http://localhost/ElgadiSalma_Alpha/Users/';
 const addContainer = document.getElementById('addContainer');
 const addButton = document.getElementById('addButton');
-const saveButton = document.getElementById('saveButton'); // Ajout du bouton "Save"
+const saveButton = document.getElementById('saveButton');
+const deleteButton = document.getElementById('deleteButton'); 
 const userContainer = document.getElementById('usersContainer');
 
 
@@ -17,6 +18,10 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
         addUser();
         saveUsers(); 
     });
+
+    // deleteButton.addEventListener('click', function (event) {
+    //     deleteUser();
+    // });
 
     function addUser() 
     {
@@ -98,7 +103,7 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
         // publication = data;
 
         displayData(data);
-        })
+    })
         .catch(error => {
         console.error('Error:', error);
         });
@@ -110,16 +115,53 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
             
             return (
         `
-        <td class="p-3 px-5">${user.username}</td>
-        <td class="p-3 px-5">${user.email}</td>
-        <td class="p-3 px-5 flex gap-5 justify-end">
-            <button name="supprimer" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Supprimer</button>
-            <button name="blocker" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">blocker</button>
-        </td>
+        <div class="px-5 py-3 text-center flex flex-col gap-2">
+            <input class="text-black uppercase text-2xl font-bold text-center " value="${user.username}"/>
 
+            <div>
+                <input class=" mt-2 text-blue-500 font-bold p-2 text-center" value ="${user.email}"/>
+            </div>
+
+            <div>
+                <input type=""hidden class="inputIdUser" value="${user.id_user}"/>
+                <button name="supprimer" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="deleteUser()">Supprimer</button>
+                <button name="modifier" class="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Modifier</button> 
+            </div>   
+
+        </div>  
         `
             );
         });
-        console.log(rows);
+        // console.log(rows);
         userContainer.innerHTML = rows;
     }
+
+    function deleteUser() 
+    {
+        const idUserInput = document.querySelector(".inputIdUser");
+        const idUser = idUserInput.value;
+    
+        if (idUser) {
+            fetch(endpoint + `deleteUser/${idUser}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+    
+                // Actualiser l'affichage après suppression
+                fetch(endpoint + 'displayAll')
+                    .then(response => response.json())
+                    .then(data => {
+                        displayData(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la suppression:', error);
+            });
+        }
+    }
+    
