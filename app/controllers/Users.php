@@ -146,18 +146,19 @@ class Users extends Controller
 
       if (!empty($username && $email)) {
         // echo json_encode ($data);die;
+        if ($this->userModel->checkEmail($email)) 
+        {
         if ($this->userModel->editUser($id, $username, $email)) {
           // echo json_encode ($data);die;
           echo json_encode(['message' => true]);
         } else {
           echo json_encode(['message' => false]);
         }
+      }
       } else {
         echo json_encode(['message' => 'invalid request']);
       }
-    } else {
-      echo json_encode(['message' => 'error']);
-    }
+    } 
   }
 
 
