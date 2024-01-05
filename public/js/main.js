@@ -103,97 +103,78 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
         });
 
 
-    function displayData(data)
-    {
-        const rows = data.map((user) => {
-            // console.log(user);
-            return (
-        `
-        <div class="px-5 py-3 text-center flex flex-col gap-2">
-            <input class="text-black uppercase text-2xl font-bold text-center usernameInput" value="${user.username}"/>
-
-            <div>
-                <input class="mt-2 text-blue-500 font-bold p-2 text-center emailInput" value="${user.email}"/>
-            </div>
-
-            <div>
-                
-                <button name="supprimer" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="deleteUser(${user.id_user})">Supprimer</button>
-                <button name="modifier" class="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="editUser(${user.id_user})">Modifier</button> 
-            </div>   
-        </div>
-        `
-            );
-        });
-        userContainer.innerHTML += rows;
-    }
-
-
-    function deleteUser(idUser) 
-    {
-    
-        if (idUser) {
-            fetch(endpoint + `deleteUser/${idUser}`, {
-                method: 'DELETE',
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-    
-                fetch(endpoint + 'displayAll')
-                    .then(response => response.json())
-                    .then(data => {
-                        displayData(data);
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            })
-            .catch(error => {
-                console.error('Erreur lors de la suppression:', error);
+        function displayData(data) {
+            const rows = data.map((user) => {
+                return `
+                    <div class="user-item px-5 py-3 text-center flex flex-col gap-2" data-userid="${user.id_user}">
+                        <input class="text-black uppercase text-2xl font-bold text-center usernameInput" value="${user.username}"/>
+                        <div>
+                            <input class="mt-2 text-blue-500 font-bold p-2 text-center emailInput" value="${user.email}"/>
+                        </div>
+                        <div>
+                            <button name="supprimer" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="deleteUser(${user.id_user})">Supprimer</button>
+                            <button name="modifier" class="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="editUser(${user.id_user})">Modifier</button> 
+                        </div>   
+                    </div>
+                `;
             });
+            userContainer.innerHTML = rows;
         }
-    }
+        
+        function deleteUser(idUser) {
+            if (idUser) {
+                fetch(endpoint + `deleteUser/${idUser}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+        
+                    const userItem = document.querySelector(`.user-item[data-userid="${idUser}"]`);
+                    if (userItem) {
+                        userItem.style.display = 'none';
+                    }
+    
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la suppression:', error);
+                });
+            }
+        }
 
 
     
     function editUser(idUser) 
     {
-        
-    
         const usernameInput = document.querySelector(".usernameInput").value.trim(); 
         const emailInput = document.querySelector(".emailInput").value.trim(); 
         
-    
         const userData = {
             username: usernameInput,
             email: emailInput,
         };
         console.log(idUser);
         if (idUser) {
-        fetch(endpoint + `editUsers/${idUser}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            fetch(endpoint + 'displayAll')
-                .then(response => response.json())
-                .then(data => {
-                    displayData(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        })
-        .catch(error => {
-            console.error('Error', error);
-        });
-    
+            fetch(endpoint + `editUsers/${idUser}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const userItem = document.querySelector(`.user-item[data-userid="${idUser}"]`);
+                    if (userItem) 
+                    {
+                        usernameInput.value = userData.username;
+                        emailInput.value = userData.email;
+                    }
+            })
+            .catch(error => {
+                console.error('Error', error);
+            });
         }
     }
     
