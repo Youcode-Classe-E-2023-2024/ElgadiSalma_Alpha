@@ -63,7 +63,7 @@
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $this->db->bind(':password', $hashedPassword);
     
-    return $this->db->execute(); // Ne pas besoin de vérifier ici
+    return $this->db->execute();
 }
 
     //  // Find User By ID
@@ -95,4 +95,18 @@
       }
     }
 
+    public function editUser($idUser, $username, $email)
+    {
+        $this->db->query('UPDATE users SET username = :username, email = :email WHERE id_user = :idUser');
+
+        $this->db->bind(':username', $username);
+        $this->db->bind(':email', $email);
+        $this->db->bind(':idUser', $idUser);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
   }
