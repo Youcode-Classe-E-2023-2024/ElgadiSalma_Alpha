@@ -30,7 +30,7 @@
     </a>
 
     <!-- Add room -->
-    <a href="">
+    <a href="<?php echo URLROOT; ?>/products/addProduct">
       <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
       <img src="<?php echo URLROOT . "/image/img/room.png" ?>" alt="">
         </div>  
