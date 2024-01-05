@@ -154,6 +154,38 @@ Class Users extends Controller
         }
       }
     }
+
+    public function editUsers($id)
+    {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+      {
+        $postData = file_get_contents("php://input");
+        $data = json_decode($postData, true);
+        $username =$data['username'] ;
+        $email =$data['email'] ;
+        // echo json_encode ($data);die;
+
+        if(!empty($username && $email ))
+        {
+          // echo json_encode ($data);die;
+          if($this->userModel->editUser($id, $username, $email)){
+          // echo json_encode ($data);die;
+            echo json_encode(['message'=>true]);
+          }else{
+            echo json_encode(['message'=>false]);
+          }
+
+        }
+        else{
+            echo json_encode(['message'=>'invalid request']);
+        }
+
+      }
+      else{
+          echo json_encode(['message'=>'error']);
+      }
+
+    }
     
 
     public function logout()
