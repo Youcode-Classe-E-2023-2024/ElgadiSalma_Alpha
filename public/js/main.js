@@ -19,10 +19,6 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
         saveUsers(); 
     });
 
-    // deleteButton.addEventListener('click', function (event) {
-    //     deleteUser();
-    // });
-
     function addUser() 
     {
         const usernames = document.querySelectorAll('[name^="username"]');
@@ -100,8 +96,6 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
     fetch(endpoint+`displayAll`)
         .then(response => response.json())
         .then(data => {
-        // publication = data;
-
         displayData(data);
     })
         .catch(error => {
@@ -112,34 +106,31 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
     function displayData(data)
     {
         const rows = data.map((user) => {
-            
+            // console.log(user);
             return (
         `
         <div class="px-5 py-3 text-center flex flex-col gap-2">
-            <input class="text-black uppercase text-2xl font-bold text-center " value="${user.username}"/>
+            <input class="text-black uppercase text-2xl font-bold text-center usernameInput" value="${user.username}"/>
 
             <div>
-                <input class=" mt-2 text-blue-500 font-bold p-2 text-center" value ="${user.email}"/>
+                <input class="mt-2 text-blue-500 font-bold p-2 text-center emailInput" value="${user.email}"/>
             </div>
 
             <div>
-                <input type=""hidden class="inputIdUser" value="${user.id_user}"/>
-                <button name="supprimer" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="deleteUser()">Supprimer</button>
-                <button name="modifier" class="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Modifier</button> 
+                
+                <button name="supprimer" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="deleteUser(${user.id_user})">Supprimer</button>
+                <button name="modifier" class="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" onclick="editUser(${user.id_user})">Modifier</button> 
             </div>   
-
-        </div>  
+        </div>
         `
             );
         });
-        // console.log(rows);
-        userContainer.innerHTML = rows;
+        userContainer.innerHTML += rows;
     }
 
-    function deleteUser() 
+
+    function deleteUser(idUser) 
     {
-        const idUserInput = document.querySelector(".inputIdUser");
-        const idUser = idUserInput.value;
     
         if (idUser) {
             fetch(endpoint + `deleteUser/${idUser}`, {
@@ -149,7 +140,6 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
             .then(data => {
                 console.log(data);
     
-                // Actualiser l'affichage après suppression
                 fetch(endpoint + 'displayAll')
                     .then(response => response.json())
                     .then(data => {
@@ -164,4 +154,48 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
             });
         }
     }
+
+
+    
+    function editUser(idUser) 
+    {
+        
+    
+        const usernameInput = document.querySelector(".usernameInput").value.trim(); 
+        const emailInput = document.querySelector(".emailInput").value.trim(); 
+        
+    
+        const userData = {
+            username: usernameInput,
+            email: emailInput,
+        };
+        console.log(idUser);
+        if (idUser) {
+        fetch(endpoint + `editUsers/${idUser}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            fetch(endpoint + 'displayAll')
+                .then(response => response.json())
+                .then(data => {
+                    displayData(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        })
+        .catch(error => {
+            console.error('Error', error);
+        });
+    
+        }
+    }
+    
+    
     
