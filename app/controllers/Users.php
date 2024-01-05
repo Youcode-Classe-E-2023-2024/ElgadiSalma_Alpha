@@ -143,6 +143,17 @@ Class Users extends Controller
       echo json_encode($users);
     }
 
+    public function deleteUser($id)
+    {
+      if ($_SERVER['REQUEST_METHOD'] == 'DELETE') 
+      {
+        if($this->userModel->deleteUsers($id)){
+          echo json_encode(['message' => 'User deleted successfully']);
+        } else {
+            echo json_encode(['message' => 'Invalid request method']);
+        }
+      }
+    }
     
 
     public function logout()
