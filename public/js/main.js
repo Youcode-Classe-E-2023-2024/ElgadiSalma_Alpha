@@ -59,6 +59,7 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
                 console.log(data);
                 userArray = [];
     
+                // Vérifier si le message est "email déjà existant"
                 if (data.some(item => item.message === 'email déjà existant')) {
                     alert('Email déjà existant. Veuillez utiliser un autre e-mail.');
                 }
@@ -148,39 +149,34 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
 
 
     
-    function editUser(idUser) 
-    {
-        const usernameInput = document.querySelector(".usernameInput").value.trim(); 
-        const emailInput = document.querySelector(".emailInput").value.trim(); 
+        function editUser(idUser) {
+            const usernameInput = document.querySelector(`.user-item[data-userid="${idUser}"] .usernameInput`);
+            const emailInput = document.querySelector(`.user-item[data-userid="${idUser}"] .emailInput`);
+            
+            const userData = {
+                username: usernameInput.value.trim(),
+                email: emailInput.value.trim(),
+            };
         
-        const userData = {
-            username: usernameInput,
-            email: emailInput,
-        };
-        console.log(idUser);
-        if (idUser) {
-            fetch(endpoint + `editUsers/${idUser}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                const userItem = document.querySelector(`.user-item[data-userid="${idUser}"]`);
-                    if (userItem) 
-                    {
-                        usernameInput.value = userData.username;
-                        emailInput.value = userData.email;
-                    }
-            })
-            .catch(error => {
-                console.error('Error', error);
-            });
+            if (idUser) {
+                fetch(endpoint + `editUsers/${idUser}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    
+                    // Mettez à jour les valeurs des champs de formulaire
+                    usernameInput.value = userData.username;
+                    emailInput.value = userData.email;
+                })
+                .catch(error => {
+                    console.error('Error', error);
+                });
+            }
         }
-    }
-    
-    
-    
+        
