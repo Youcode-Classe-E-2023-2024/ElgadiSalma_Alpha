@@ -50,6 +50,7 @@
     
 </div>
 
+<script src="<?php echo URLROOT ; ?>/js/users.js">
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
 
