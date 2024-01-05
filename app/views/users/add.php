@@ -2,7 +2,7 @@
 <?php require APPROOT . '/views/inc/navbar.php'; ?>
 
 <div class="bg-white-100 h-full overflow-y-auto w-full">
-    <h2 class="text-center mt-16 drop-shadow-md font-bold text-6xl uppercase mb-10">new posts</h2>
+    <h2 class="text-center mt-16 py-4 drop-shadow-md font-bold text-4xl text-yellow-500 uppercase mb-10">new Users</h2>
     <div class="bg-white p-10 rounded-lg shadow md:w-3/4 mx-auto lg:w-1/2">
         <div>
             <div class="mb-5">
@@ -36,28 +36,17 @@
         </div>
     </div>
 
+    <!-- display users -->
+    <div class="py-10">
+        <h1 class="text-3xl text-center ">
+            Utilisateur
+        </h1>
 
-    <div class="pl-80 flex">
-            <h1 class="text-3xl">
-                Utilisateur
-            </h1>
+        <div id="usersContainer" class="px-3 py-4 flex flex-col gap-2 text-center items-center justify-center">
         </div>
-        <div class="px-3 py-4 flex justify-center">
-            <table class="w-2/3	 text-md bg-white shadow-md rounded mb-4">
-                <tbody>
-                    <tr class="border-b">
-                        <th class="text-left p-3 px-5">User Name</th>
-                        <th class="text-left p-3 px-5">Email</th>
-                        <th></th>
-                    </tr>
-                    <tr class="border-b hover:bg-orange-100 bg-gray-100">
 
-            <div id="usersContainer">
-            </div>        </tr>
-
-                </tbody>
-            </table>
     </div>
+    <!--  -->
     
 </div>
 
