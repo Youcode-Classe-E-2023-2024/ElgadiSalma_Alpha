@@ -109,4 +109,15 @@
             return false;
         }
     }
+
+    // graphe
+    public function grapheUsers()
+    {
+      $this->db->query("SELECT DATE(created_at) as user_date, COUNT(*) as user_count FROM users GROUP BY user_date");
+      $users = $this->db->resultset();
+      return $users;
+    }
+
+
+
   }
