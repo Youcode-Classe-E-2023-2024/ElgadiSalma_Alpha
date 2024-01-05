@@ -45,21 +45,24 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
         }
     }
 
-    function saveUsers() 
-    {
-        if (userArray.length > 0) 
-        {
+    function saveUsers() {
+        if (userArray.length > 0) {
             fetch(endpoint + 'addUsers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(userArray), // Envoyer tous les utilisateurs
+                body: JSON.stringify(userArray),
             })
             .then(response => response.json())
             .then(data => { 
                 console.log(data);
-                userArray = []; // Réinitialisation du tableau après sauvegarde
+                userArray = [];
+    
+                if (data.some(item => item.message === 'email déjà existant')) {
+                    alert('Email déjà existant. Veuillez utiliser un autre e-mail.');
+                }
+    
             })
             .catch(error => {
                 console.error('Erreur', error);
@@ -103,7 +106,8 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
         });
 
 
-        function displayData(data) {
+        function displayData(data) 
+        {
             const rows = data.map((user) => {
                 return `
                     <div class="user-item px-5 py-3 text-center flex flex-col gap-2" data-userid="${user.id_user}">

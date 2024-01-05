@@ -25,7 +25,7 @@
     //   }
     // }
   
-    public function findUserByEmail($email) 
+    public function checkEmail($email) 
     {
       $this->db->query('SELECT * FROM users WHERE email = :email');
       $this->db->bind(':email', $email);
