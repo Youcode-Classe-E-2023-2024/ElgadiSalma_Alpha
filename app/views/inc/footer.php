@@ -1,3 +1,4 @@
-<script src="<?php echo URLROOT ; ?>/js/main.js"></script>
+</script><script src="<?php echo URLROOT ; ?>/js/graphe.js"></script>
+
 </body>
 </html>
