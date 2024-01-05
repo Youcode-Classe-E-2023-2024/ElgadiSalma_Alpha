@@ -2,16 +2,25 @@
 
 Class Pages extends Controller{
 
-    private $ProductModel;
+    private $userModel;
+    private $productModel;
+    
 
-    public function __construct()
-    {
-        $this->ProductModel = $this->model('Product');
-    }
+  public function __construct()
+  {
+    $this->userModel = $this->model('User');
+    $this->productModel = $this->model('Product');
+  }
+
     public function index(){
-        // echo "hi";
         $this->view('pages/index');
 
+    }
+
+    public function grapheUser()
+    {
+    $users = $this->userModel->grapheUsers();
+    echo json_encode($users);
     }
 
 
