@@ -83,4 +83,16 @@
       return $users;
     }
 
+    public function deleteUsers($id)
+    {
+      $this->db->query("DELETE FROM users WHERE id_user = :id");
+      $this->db->bind(':id', $id);
+      if($this->db->execute())
+      {
+      return true;
+      } else {
+          return false;
+      }
+    }
+
   }
