@@ -36,13 +36,13 @@
       }
     }
 
-    public function editProduct($idProduct, $title, $description)
+    public function editProduct($id, $title, $description)
     {
         $this->db->query('UPDATE product SET title = :title, description = :description WHERE id_product = :idProduct');
 
         $this->db->bind(':title', $title);
         $this->db->bind(':description', $description);
-        $this->db->bind(':idProduct', $idProduct);
+        $this->db->bind(':idProduct', $id);
 
         if ($this->db->execute()) {
             return true;
