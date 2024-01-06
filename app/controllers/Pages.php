@@ -12,17 +12,27 @@ Class Pages extends Controller{
     $this->productModel = $this->model('Product');
   }
 
-    public function index(){
-        $this->view('pages/index');
+  public function index()
+  {
+    $data =[
+      'numOfUsers' => $this->userModel->countUsers(),
+      'numOfProducts' => $this->productModel->countProducts(),
+    ];
+    $data;
+    return $this->view('pages/index' , $data);
+  }
 
-    }
+  public function grapheUser()
+  {
+      $users = $this->userModel->grapheUser();
+      echo json_encode($users);
+  }
 
-    public function grapheUser()
+    public function getUser()
     {
-    $users = $this->userModel->grapheUsers();
-    echo json_encode($users);
+      $userCount = $this->userModel->getUsers();
+      return $userCount;
     }
-
 
 
     
