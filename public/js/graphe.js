@@ -1,16 +1,15 @@
-// Exemple pour créer un graphique en utilisant les données récupérées
+// Ajoutez ce code dans votre fichier graphe.js
 fetch('http://localhost/ElgadiSalma_Alpha/Pages/grapheUser')
-        .then(response => response.json())
-        .then(data => {
-            createChart(data)
-        })
-        .catch(error => {
+    .then(response => response.json())
+    .then(data => {
+        createChart(data);
+    })
+    .catch(error => {
         console.error('Error:', error);
-        });
-
+    });
 
 function createChart(data) {
-    const dates = data.map(entry => entry.user_date);
+    const dates = data.map(entry => entry.date);
     const counts = data.map(entry => entry.user_count);
 
     const ctx = document.getElementById('userChart').getContext('2d');
@@ -29,17 +28,19 @@ function createChart(data) {
         options: {
             scales: {
                 x: {
-                    type: 'time',
-                    time: {
-                        unit: 'day' // ajustez ceci en fonction de vos besoins (day, week, month, etc.)
+                    title: {
+                        display: true,
+                        text: 'Date'
                     }
                 },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Nombre d\'utilisateurs'
+                    }
                 }
             }
         }
     });
 }
-
-// ... (votre code pour récupérer les données du serveur et appeler createChart)
