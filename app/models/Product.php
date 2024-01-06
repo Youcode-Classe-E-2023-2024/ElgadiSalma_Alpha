@@ -50,4 +50,14 @@
             return false;
         }
     }
+
+    public function countProducts()
+    {
+      $this->db->query('SELECT id_product FROM product');
+      if($this->db->execute()){
+         return $this->db->rowCount();
+      }else{
+          die("Error in countProducts");
+      }
+    }
   }
