@@ -60,4 +60,11 @@
           die("Error in countProducts");
       }
     }
+
+    public function grapheProduct()
+    {
+      $this->db->query("SELECT DATE(created_at) AS date, COUNT(*) AS product_count FROM product GROUP BY date ORDER BY date");
+      $products = $this->db->resultset();
+      return $products;
+    }
   }
