@@ -6,16 +6,17 @@ Class Products extends Controller{
 
     public function __construct()
     {
-        $this->productModel = $this->model('product');
+        $this->productModel = $this->model('Product');
     }
 
     public function index(){
         echo "hello";
     }
 
-    public function addProduct()
+    public function addProducts ()
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      // echo json_encode ("salam salma");die;
       $postData = file_get_contents("php://input");
       $data = json_decode($postData);
 
@@ -31,8 +32,11 @@ Class Products extends Controller{
             $description = $descriptions[$i];
 
             if (!empty($title) && !empty($description)) {
-              
+              // echo json_encode ("salam salma");die;
+
                 if ($this->productModel->addProduct($title, $description)) {
+                  // echo json_encode ("salam salma");die;
+
                   $response[] = array('message' => true);
                 } else {
                   $response[] = array('message' => false);
@@ -80,7 +84,7 @@ Class Products extends Controller{
       if (!empty($title && $description)) 
       {
         // echo json_encode ($data);die;
-        if ($this->productModel->editUser($id, $title, $description)) {
+        if ($this->productModel->editProduct($id, $title, $description)) {
           // echo json_encode ($data);die;
           echo json_encode(['message' => true]);
         } else {
