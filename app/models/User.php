@@ -111,11 +111,37 @@
     }
 
     // graphe
-    public function grapheUsers()
+    public function grapheUser()
     {
-      $this->db->query("SELECT DATE(created_at) as user_date, COUNT(*) as user_count FROM users GROUP BY user_date");
-      $users = $this->db->resultset();
-      return $users;
+        $sql = "SELECT DATE(created_at) AS date, COUNT(*) AS user_count FROM users GROUP BY date ORDER BY date ;";
+        $results = $this->db->query($sql);
+        
+        // Calculez la différence quotidienne
+        $dailyDifference = [];
+        $previousCount = 0;
+        
+        foreach ($results as $result) {
+            $currentCount = $result->user_count;
+            $difference = $currentCount - $previousCount;
+            $dailyDifference[] = [
+                'user_date' => $result->date, 
+                'user_count' => $difference
+            ];
+            $previousCount = $currentCount;
+        }
+        
+        return $dailyDifference;
+    }
+
+    public function countUsers(){
+      $this->db->query('SELECT id_user FROM users');
+      if($this->db->execute()){
+         return $this->db->rowCount();
+      }else{
+          die("Error in countusers");
+      }
+  
+  
     }
 
 
