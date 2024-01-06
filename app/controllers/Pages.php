@@ -28,6 +28,12 @@ Class Pages extends Controller{
       echo json_encode($users);
   }
 
+  public function grapheProduct()
+  {
+      $products = $this->productModel->grapheProduct();
+      echo json_encode($products);
+  }
+
     public function getUser()
     {
       $userCount = $this->userModel->getUsers();
