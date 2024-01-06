@@ -6,24 +6,24 @@
       $this->db = new Database;
     }
 
-    // public function register($data)
-    // {
+    public function register($data)
+    {
     
-    //   $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
+      $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
   
-    //   // Bind values
-    //   $this->db->bind(':username', $data['username']);
-    //   $this->db->bind(':email', $data['email']);
-    //   $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-    //   $this->db->bind(':password', $hashedPassword);
+      // Bind values
+      $this->db->bind(':username', $data['username']);
+      $this->db->bind(':email', $data['email']);
+      $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+      $this->db->bind(':password', $hashedPassword);
       
-    //   // Execute
-    //   if($this->db->execute()){
-    //       return true;
-    //   } else {
-    //       return false;
-    //   }
-    // }
+      // Execute
+      if($this->db->execute()){
+          return true;
+      } else {
+          return false;
+      }
+    }
   
     public function checkEmail($email) 
     {
