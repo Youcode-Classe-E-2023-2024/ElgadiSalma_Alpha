@@ -90,12 +90,12 @@
             <div class="h-full py-6 px-6 rounded-xl flex flex-col justify-around border border-gray-200 bg-white">
               <div>
                 <h5 class="text-xl text-yellow-500"><ins>Nombre d'utilisateurs :</ins></h5>
-            <h1 class="text-5xl font-bold text-gray-600">64 </h1>
+                <h1 class="text-5xl font-bold text-gray-600"><?php echo $data['numOfUsers']; ?> </h1>
               </div>
 
               <div>
               <h5 class="text-xl text-yellow-500"><ins>Nombre de produits :</ins></h5>
-            <h1 class="text-5xl font-bold text-gray-600">64 </h1>
+            <h1 class="text-5xl font-bold text-gray-600"><?php echo $data['numOfProducts']; ?></h1>
               </div>
             
             </div>
