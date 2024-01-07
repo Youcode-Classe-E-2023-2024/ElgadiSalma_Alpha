@@ -1,4 +1,4 @@
-// User Graphe
+
 fetch('http://localhost/ElgadiSalma_Alpha/Pages/grapheUser')
     .then(response => response.json())
     .then(data => {
@@ -48,6 +48,7 @@ function createUserChart(data) {
 // End User Graphe
 
 // Product Graphe
+
 fetch('http://localhost/ElgadiSalma_Alpha/Pages/grapheProduct')
     .then(response => response.json())
     .then(data => {
@@ -95,3 +96,8 @@ function createProductChart(data) {
 }
 
 // End Product Graphe
+
+document.getElementById('exportToPDF').addEventListener('click', function() {
+    const element = document.getElementById('statistique');
+    html2pdf(element);
+});
