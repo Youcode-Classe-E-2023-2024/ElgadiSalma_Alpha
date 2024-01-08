@@ -148,7 +148,7 @@
 
     public function getNotif()
     {
-      $this->db->query("SELECT * FROM notif");
+      $this->db->query("SELECT * FROM notif ORDER BY created_at DESC");
       $notifs = $this->db->resultset();
       return $notifs;
     }
