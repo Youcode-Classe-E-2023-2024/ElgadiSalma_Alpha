@@ -146,4 +146,12 @@
         }
     }
 
+
+    public function getNotif()
+    {
+      $this->db->query("SELECT * FROM notif");
+      $notifs = $this->db->resultset();
+      return $notifs;
+    }
+
   }
