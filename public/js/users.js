@@ -59,12 +59,11 @@ let userArray = []; // Tableau pour stocker les données des utilisateurs
             .then(data => { 
                 console.log(data);
                 userArray = [];
-    
-                // Vérifier si le message est "email déjà existant"
-                if (data.some(item => item.message === 'email déjà existant')) {
+                    if (data.some(item => item.message === 'email déjà existant')) {
                     alert('Email déjà existant. Veuillez utiliser un autre e-mail.');
                 }
-    
+                fetchDataAndDisplay();
+
             })
             .catch(error => {
                 console.error('Erreur', error);
