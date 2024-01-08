@@ -25,7 +25,10 @@
 
       </div>
       <button type="submit" class="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 md:p-4 text-white uppercase w-full">Login</button>
+      <a href="<?php echo URLROOT; ?>/users/resetPassword" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
+
     </form>
+    
     <a href="<?php echo URLROOT; ?>/users/register">
     <button class="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 md:p-4 text-white uppercase w-full">Register</button>
     </a>
