@@ -49,8 +49,6 @@ Class Pages extends Controller{
     ];
     
     $this->view('pages/notification', $data);
-
-
     }
 
     
