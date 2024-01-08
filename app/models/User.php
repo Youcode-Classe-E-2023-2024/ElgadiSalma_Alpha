@@ -56,13 +56,24 @@
 
     public function addUsers($username, $email, $password)
     {
-        $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
+        $this->db->query('INSERT INTO users (username, email, password, created_by) VALUES(:username, :email, :password, :created_by)');
         
         $this->db->bind(':username', $username);
         $this->db->bind(':email', $email);
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $this->db->bind(':password', $hashedPassword);
+        $this->db->bind(':created_by', $_SESSION['username']);
+
         
+        return $this->db->execute();
+    }
+
+    public function addNotification()
+    {
+        $this->db->query("INSERT INTO notif (text, created_by) VALUES (:text, :created_by)");
+        $this->db->bind(':text', "Nouvel utilisateur ajouté");
+        $this->db->bind(':created_by', $_SESSION['username']);
+
         return $this->db->execute();
     }
 
@@ -118,7 +129,8 @@
       return $users;
     }
 
-    public function countUsers(){
+    public function countUsers()
+    {
       $this->db->query('SELECT id_user FROM users');
       if($this->db->execute()){
          return $this->db->rowCount();
@@ -126,9 +138,22 @@
           die("Error in countusers");
       }
   
-  
     }
 
 
+    // reset pass
+    public function resetPassword($email, $token_hash, $delai)
+    {
+        $this->db->query("UPDATE users SET reset = :reset, delai = :delai WHERE email = :email");
+        $this->db->bind(':delai', date("Y-m-d H:i:s", $delai)); 
+        $this->db->bind(':email', $email);
+        $this->db->bind(':reset', $token_hash);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
   }
