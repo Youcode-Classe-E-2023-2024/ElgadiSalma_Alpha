@@ -129,6 +129,7 @@ class Users extends Controller
               } else {
                 if ($this->userModel->addUsers($username, $email, $password)) {
                   $response[] = array('message' => true);
+                  $this->userModel->addNotification();
                 } else {
                   $response[] = array('message' => false);
                 }
@@ -190,36 +191,62 @@ class Users extends Controller
   }
 
 
-  public function resetPassword()
-  {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-    {
-      $email = $_POST['email'];
-        $email_err = '';
-        $token = bin2hex(random_bytes(32));
-        $token_hash = hash("sha256", $token);
+  // public function resetPassword()
+  // {
+  //     if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+  //     {
+  //         $email = $_POST['email'];
+  //         $email_err = '';
+  //         $token = bin2hex(random_bytes(16));
 
-        $url = "http://localhost/ElgadiSalma_Alpha/users/newpass&&selector=" . $selector . "&validator=" . bin2hex($token);
+  //         $token_hash = hash("sha256", $token);
 
-        $delai = date("Y-m-d H:i:s", time() + 1800); //30min
+  //         $delai = time() + 1800; // Ajoute 30 minutes à l'heure actuelle
 
+  //         if ($this->userModel->checkEmail($email)) 
+  //         {
+  //             if($this->userModel->resetPassword($email, $token_hash, $delai))
+  //             {
+  //                 $this->sendResetEmail($email, $token);
+  //             }
+  //         }
+  //         else{
+  //             $email_err = 'Email non existant' ;
+  //         }
+  //     }
+  //     else {
+  //         $this->view('users/reset_password');
+  //     }
+  // }
 
-      if ($this->userModel->checkEmail($email)) 
-      {
-      if($this->userModel->resetPassword($email, $token_hash, $delai))
-      {
-        $mail = new MailSender();
-        $mail->Send($email, $url);      }
+  // private function sendResetEmail($email, $token)
+  // {
+  //     require_once '../../vendor/autoload.php';
 
-      }
-      else{
-        $email_err = 'Email non existant' ;
-      }
+  //     $mail = new PHPMailer(true);
 
+  //     try {
+  //         $mail->isSMTP();
+  //         $mail->Host = 'smtp.gmail.com';
+  //         $mail->SMTPAuth   = true;
+  //         $mail->Username   = 'alahcen2000@gmail.com'; 
+  //         $mail->Password   = 'uyll kafu cmzt omyl'; 
+  //         $mail->SMTPSecure = 'tls';
+  //         $mail->Port       = 587;
 
-    }
-    else {
-    $this->view('users/reset_password');
-    }
-  }
+  //         $mail->setFrom('alahcen2000@gmail.com', 'salma');
+  //         $mail->addAddress($email);
+
+  //         //Content
+  //         $mail->isHTML(true);
+  //         $mail->Subject = 'Réinitialisation du mot de passe';
+  //         $mail->Body    = 'Pour réinitialiser votre mot de passe, cliquez sur ce lien : <a href="' . URLROOT . '/users/newpassword?token=' . $token . '">Réinitialiser le mot de passe</a>';
+
+  //         $mail->send();
+  //         echo 'rrr';
+  //     } catch (Exception $e) {
+  //         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  //     }
+  // }
+
 }
