@@ -68,10 +68,10 @@
         return $this->db->execute();
     }
 
-    public function addNotification()
+    public function addNotification($username)
     {
         $this->db->query("INSERT INTO notif (text, created_by) VALUES (:text, :created_by)");
-        $this->db->bind(':text', "waaaa");
+        $this->db->bind(':text', "Nouvel utilisateur '$username' ajoute par");
         $this->db->bind(':created_by', $_SESSION['username']);
 
         return $this->db->execute();
