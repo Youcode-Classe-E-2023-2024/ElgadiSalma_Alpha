@@ -41,5 +41,12 @@ Class Pages extends Controller{
     }
 
 
+    // notification
+    public function notification()
+    {
+      return $this->view('pages/notification' );
+
+    }
+
     
 }
