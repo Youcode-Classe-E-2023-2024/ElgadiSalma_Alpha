@@ -12,7 +12,6 @@ class Users extends Controller
   public function register()
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
       $username = $_POST['username'];
       $email = $_POST['email'];
       $password = $_POST['password'];
@@ -22,7 +21,7 @@ class Users extends Controller
         $email_err = 'Email is already taken';
         $this->view('users/register');
       } else {
-        if ($this->userModel->addUsers($username, $email, $password)) {
+        if ($this->userModel->register($username, $email, $password)) {
           $this->view('users/login');
         } else {
           $this->view('users/register');
