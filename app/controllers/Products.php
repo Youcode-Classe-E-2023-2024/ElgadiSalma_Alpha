@@ -38,6 +38,10 @@ Class Products extends Controller{
                   // echo json_encode ("salam salma");die;
 
                   $response[] = array('message' => true);
+                  if($this->productModel->addNotification())
+                  {
+                    // echo "zz";
+                  }
                 } else {
                   $response[] = array('message' => false);
                 }
