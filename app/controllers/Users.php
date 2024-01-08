@@ -37,44 +37,72 @@ class Users extends Controller
   public function login()
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $email = $_POST['email'];
-      $password = $_POST['password'];
-      $email_err = '';
-      $password_err = '';
-
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      // Init data
+      $data = [
+        'email' => trim($_POST['email']),
+        'password' => trim($_POST['password']),
+        'email_err' => '',
+        'password_err' => '',
+      ];
 
       // Validate Email
-      if (empty($email)) {
-        $email_err = 'Please enter email';
+      if (empty($data['email'])) {
+        $data['email_err'] = 'Pleae enter email';
       }
 
       // Validate Password
-      if (empty($password)) {
-        $password_err = 'Please enter password';
+      if (empty($data['password'])) {
+        $data['password_err'] = 'Please enter password';
       }
-
-      if (empty($email_err) && empty($password_err)) {
-        $loggedInUser = $this->userModel->login($email, $password);
-        if ($loggedInUser) {
-          session_start();
-          $_SESSION['id_user'] = $loggedInUser['id_user'];
-          $_SESSION['username'] = $loggedInUser['username'];
-          $_SESSION['email'] = $loggedInUser['email'];
-          $this->view('pages/index');
+      if (empty($data['email_err']) && empty($data['password_err'])) {
+        if ($this->userModel->checkEmail($data['email'])) 
+        {
+          $loggedInUser = $this->userModel->login($data['email'], $data['password']);
+          if ($loggedInUser) {
+            $this->createUserSession($loggedInUser);
+          } else {
+            // User Password incorrect
+            $data['password_err'] = 'Password not correct';
+            $data['display'] = 'login';
+            $this->view('users/login', $data);
+          }
         } else {
-          $password_err = 'Password not correct';
-          $this->view('users/login');
+          // User not found
+          $data['email_err'] = 'No user found';
+          $data['display'] = 'login';
+          $this->view('users/login', $data);
         }
       } else {
-        // User not found
-        $email_err = 'No user found';
+        $data['display'] = 'login';
+        $this->view('users/login', $data);
       }
     } else {
-
-      return $this->view('users/login');
+      $data['display'] = 'login';
+      $this->view('users/login', $data);
     }
   }
 
+  public function createUserSession($user)
+  {
+
+    $_SESSION['id_user'] = $user->id;
+    $_SESSION['username'] = $user->username;
+    $_SESSION['email'] = $user->email;
+    redirect('pages/index');
+  }
+
+  public function logout()
+  {
+    echo"zzz";
+    unset($_SESSION['id_user']);
+    unset($_SESSION['username']);
+    unset($_SESSION['email']);
+    session_destroy();
+    redirect('users/login');
+  }
+
+  
 
   public function addUsers()
   {
@@ -162,11 +190,36 @@ class Users extends Controller
   }
 
 
-  public function logout()
+  public function resetPassword()
   {
-    session_start();
-    $_SESSION = array();
-    session_destroy();
-    return $this->view('users/add');
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+    {
+      $email = $_POST['email'];
+        $email_err = '';
+        $token = bin2hex(random_bytes(32));
+        $token_hash = hash("sha256", $token);
+
+        $url = "http://localhost/ElgadiSalma_Alpha/users/newpass&&selector=" . $selector . "&validator=" . bin2hex($token);
+
+        $delai = date("Y-m-d H:i:s", time() + 1800); //30min
+
+
+      if ($this->userModel->checkEmail($email)) 
+      {
+      if($this->userModel->resetPassword($email, $token_hash, $delai))
+      {
+        $mail = new MailSender();
+        $mail->Send($email, $url);      }
+
+      }
+      else{
+        $email_err = 'Email non existant' ;
+      }
+
+
+    }
+    else {
+    $this->view('users/reset_password');
+    }
   }
 }
