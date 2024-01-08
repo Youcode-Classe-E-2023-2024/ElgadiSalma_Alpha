@@ -129,7 +129,7 @@ class Users extends Controller
               } else {
                 if ($this->userModel->addUsers($username, $email, $password)) {
                   $response[] = array('message' => true);
-                  $this->userModel->addNotification();
+                  // $this->userModel->addNotification();
                 } else {
                   $response[] = array('message' => false);
                 }
