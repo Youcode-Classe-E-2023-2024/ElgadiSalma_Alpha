@@ -1,3 +1,7 @@
+<?php if(!userIsLoggedIn()){
+      redirect('Users/Login');
+     }?>
+
 <!-- component -->
 <div class="w-full bg-white flex overflow-hidden"> 
 
@@ -39,12 +43,11 @@
         </div>  
     </a>
     
-
+    <!-- logout -->
     <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
-    
-    <form action="<?php echo URLROOT; ?>/users/logout" method="POST">
-    <button type="submit" name="logout"><img src="<?php echo URLROOT . "/image/img/logout.png" ?>" alt=""></button>
-    </form>
+    <a href="<?php echo URLROOT; ?>/users/logout">
+    <img src="<?php echo URLROOT . "/image/img/logout.png" ?>" alt="">
+    </a>
     </div>
 
 </aside>
@@ -56,7 +59,7 @@
         <!-- Texto -->
         <div class="flex flex-col items-end ">
           <!-- Nome -->
-          <div class="text-md font-medium ">salma</div>
+          <div class="text-md font-medium "><?php echo $_SESSION['username']; ?></div>
           <!-- Título -->
           <div class="text-sm font-regular">Admin</div>
         </div>
@@ -65,3 +68,5 @@
         <div class="h-10 w-10 rounded-full cursor-pointer bg-gray-200 border-2 border-blue-400"></div>
       </div>
     </header>
+
+    
