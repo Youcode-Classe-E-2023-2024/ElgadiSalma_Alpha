@@ -6,18 +6,18 @@
       $this->db = new Database;
     }
 
+        // Login and register
+
     public function register($username, $email, $password)
     {
     
       $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
   
-      // Bind values
       $this->db->bind(':username', $username);
       $this->db->bind(':email', $email);
       $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
       $this->db->bind(':password', $hashedPassword);
       
-      // Execute
       if($this->db->execute()){
           return true;
       } else {
@@ -35,8 +35,6 @@
       return ($row) ? true : false;
     }
     
-
-    // Login / Authenticate User
     public function login($email, $password)
     {
       $this->db->query("SELECT * FROM users WHERE email = :email");
@@ -54,6 +52,7 @@
       }
     }
 
+    // end login
     public function addUsers($username, $email, $password)
     {
         $this->db->query('INSERT INTO users (username, email, password, created_by) VALUES(:username, :email, :password, :created_by)');

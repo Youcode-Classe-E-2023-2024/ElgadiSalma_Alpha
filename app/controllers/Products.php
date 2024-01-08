@@ -32,10 +32,7 @@ Class Products extends Controller{
             $description = $descriptions[$i];
 
             if (!empty($title) && !empty($description)) {
-              // echo json_encode ("salam salma");die;
-
                 if ($this->productModel->addProduct($title, $description)) {
-                  // echo json_encode ("salam salma");die;
 
                   $response[] = array('message' => true);
                   if($this->productModel->addNotification())
@@ -87,9 +84,7 @@ Class Products extends Controller{
 
       if (!empty($title && $description)) 
       {
-        // echo json_encode ($data);die;
         if ($this->productModel->editProduct($id, $title, $description)) {
-          // echo json_encode ($data);die;
           echo json_encode(['message' => true]);
         } else {
           echo json_encode(['message' => false]);
