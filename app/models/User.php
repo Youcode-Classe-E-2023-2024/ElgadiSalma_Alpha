@@ -68,24 +68,14 @@
         return $this->db->execute();
     }
 
-    public function addNotification($text)
+    public function addNotification()
     {
         $this->db->query("INSERT INTO notif (text, created_by) VALUES (:text, :created_by)");
-        $this->db->bind(':text', $text);
+        $this->db->bind(':text', "waaaa");
         $this->db->bind(':created_by', $_SESSION['username']);
 
         return $this->db->execute();
     }
-
-    //  // Find User By ID
-    //  public function getUserById($id){
-    //   $this->db->query("SELECT * FROM users WHERE id = :id");
-    //   $this->db->bind(':id', $id);
-
-    //   $row = $this->db->single();
-
-    //   return $row;
-    // }
 
     public function allUsers()
     {
