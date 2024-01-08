@@ -23,6 +23,15 @@
         
         return $this->db->execute();
     }
+    
+    public function addNotification()
+    {
+      $this->db->query("INSERT INTO notif (text, created_by) VALUES (:text, :created_by)");
+      $this->db->bind(':text', "Nouveau produit ajoute par");
+      $this->db->bind(':created_by', $_SESSION['username']);
+
+      return $this->db->execute();
+    }
 
     public function deleteProduct($id)
     {
