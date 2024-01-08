@@ -6,15 +6,15 @@
       $this->db = new Database;
     }
 
-    public function register($data)
+    public function register($username, $email, $password)
     {
     
       $this->db->query('INSERT INTO users (username, email, password) VALUES(:username, :email, :password)');
   
       // Bind values
-      $this->db->bind(':username', $data['username']);
-      $this->db->bind(':email', $data['email']);
-      $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+      $this->db->bind(':username', $username);
+      $this->db->bind(':email', $email);
+      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
       $this->db->bind(':password', $hashedPassword);
       
       // Execute
