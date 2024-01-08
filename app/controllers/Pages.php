@@ -44,7 +44,12 @@ Class Pages extends Controller{
     // notification
     public function notification()
     {
-      return $this->view('pages/notification' );
+      $data = [
+        'notifs' => $this->userModel->getNotif(),
+    ];
+    
+    $this->view('pages/notification', $data);
+
 
     }
 
